@@ -11,7 +11,8 @@ import {
   Box,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { NoEncryption } from "@material-ui/icons";
+import firebase from "firebase/app";
+require("firebase/firestore");
 
 class SignupComponent extends Component {
   constructor() {
@@ -20,7 +21,7 @@ class SignupComponent extends Component {
       email: null,
       password: null,
       passwordConfirmation: null,
-      signupError: "error found",
+      signupError: "",
     };
   }
 
@@ -102,12 +103,58 @@ class SignupComponent extends Component {
     );
   }
 
+  formValid = () => this.state.password === this.state.passwordConfirmation;
+
   userTyping = (type, e) => {
-    console.log(type, e);
+    switch (type) {
+      case "email":
+        this.setState({ email: e.target.value });
+        break;
+
+      case "password":
+        this.setState({ password: e.target.value });
+        break;
+
+      case "passwordConfirmation":
+        this.setState({ passwordConfirmation: e.target.value });
+        break;
+
+      default:
+        break;
+    }
   };
 
   submitSignup = (e) => {
+    e.preventDefault();
+    if (!this.formValid()) {
+      this.setState({ signupError: "Passwords Dont match!" });
+    } else this.setState({ signupError: "" });
     console.log("Submitting signup");
+
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then((userCredential) => {
+        const userObj = { email: userCredential.user.email };
+        firebase
+          .firestore()
+          .collection("users")
+          .doc(this.state.email)
+          .set(userObj)
+          .then(() => {
+            this.props.history.push("/dashboard");
+          })
+          .catch((error) => {
+            console.error("Error adding document: ", error);
+            this.setState({ signupError: error });
+          });
+      })
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(`Error code=${errorCode} Error message=${errorMessage}`);
+        this.setState({ signupError: errorMessage });
+      });
   };
 }
 

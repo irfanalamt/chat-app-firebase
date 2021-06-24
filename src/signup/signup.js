@@ -38,7 +38,7 @@ class SignupComponent extends Component {
               flexDirection: "column",
             }}
           >
-            <Typography component="h1" variant="h5">
+            <Typography component="h1" variant="body1">
               Signup
             </Typography>
             <form
@@ -76,6 +76,7 @@ class SignupComponent extends Component {
                   onChange={(e) => this.userTyping("passwordConfirmation", e)}
                 ></Input>
               </FormControl>
+              <Box m={4}></Box>
               <Button
                 type="submit"
                 fullWidth
@@ -87,7 +88,12 @@ class SignupComponent extends Component {
               <Box m={2}></Box>
             </form>
             {this.state.signupError ? (
-              <Typography component="h5" variant="h6" color="error">
+              <Typography
+                component="h5"
+                variant="subtitle1"
+                color="error"
+                align="center"
+              >
                 {this.state.signupError}
               </Typography>
             ) : null}
@@ -128,33 +134,35 @@ class SignupComponent extends Component {
     e.preventDefault();
     if (!this.formValid()) {
       this.setState({ signupError: "Passwords Dont match!" });
-    } else this.setState({ signupError: "" });
-    console.log("Submitting signup");
+    } else {
+      this.setState({ signupError: "" });
+      console.log("Submitting signup");
 
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then((userCredential) => {
-        const userObj = { email: userCredential.user.email };
-        firebase
-          .firestore()
-          .collection("users")
-          .doc(this.state.email)
-          .set(userObj)
-          .then(() => {
-            this.props.history.push("/dashboard");
-          })
-          .catch((error) => {
-            console.error("Error adding document: ", error);
-            this.setState({ signupError: error });
-          });
-      })
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        console.log(`Error code=${errorCode} Error message=${errorMessage}`);
-        this.setState({ signupError: errorMessage });
-      });
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.state.email, this.state.password)
+        .then((userCredential) => {
+          const userObj = { email: userCredential.user.email };
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(this.state.email)
+            .set(userObj)
+            .then(() => {
+              this.props.history.push("/dashboard");
+            })
+            .catch((error) => {
+              console.error("Error adding document: ", error);
+              this.setState({ signupError: error });
+            });
+        })
+        .catch((error) => {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          console.log(`Error code=${errorCode} Error message=${errorMessage}`);
+          this.setState({ signupError: errorMessage });
+        });
+    }
   };
 }
 

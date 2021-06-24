@@ -1,18 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
+require("dotenv").config();
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { Route, BrowserRouter as Router } from "react-router-dom";
 import LoginComponent from "./login/login";
 import SignupComponent from "./signup/signup";
 import DashboardComponent from "./dashboard/dashboard";
-
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
 firebase.initializeApp({
-  apiKey: "AIzaSyCo-2kkegik0DOJ8UQ5V4RAd0CsiA31g7k",
+  apiKey: process.env.API_KEY,
   authDomain: "my-chat-app-1a6cb.firebaseapp.com",
   projectId: "my-chat-app-1a6cb",
   storageBucket: "my-chat-app-1a6cb.appspot.com",

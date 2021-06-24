@@ -30,7 +30,7 @@ class SignupComponent extends Component {
       <main>
         <Container maxWidth="xs">
           <CssBaseline></CssBaseline>
-          <Box m={6}></Box>
+          <Box m={10}></Box>
           <Paper
             style={{
               display: "flex",
@@ -157,10 +157,10 @@ class SignupComponent extends Component {
             });
         })
         .catch((error) => {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          console.log(`Error code=${errorCode} Error message=${errorMessage}`);
-          this.setState({ signupError: errorMessage });
+          console.log(
+            `Error code=${error.code} Error message=${error.message}`
+          );
+          this.setState({ signupError: error.message });
         });
     }
   };

@@ -175,7 +175,7 @@ window.env = {
   "npm_package_description": "## Available Scripts",
   "npm_package_eslintConfig_extends_0": "react-app",
   "npm_package_eslintConfig_extends_1": "react-app/jest",
-  "npm_package_gitHead": "a5a9dd560028dbb16ec33081a079dbbd220b5ac0",
+  "npm_package_gitHead": "def0e42430b7c1883bdabcb6b56b62ab0863b9f9",
   "npm_package_name": "my_chat_app",
   "npm_package_private": "true",
   "npm_package_readmeFilename": "README.md",

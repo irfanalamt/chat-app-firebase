@@ -1,8 +1,14 @@
 import React, { Component } from "react";
+import ChatListComponent from "../chatList/chatList";
 
 class DashboardComponent extends Component {
   render() {
-    return <div>Hello from Dashboard </div>;
+    return (
+      <div>
+        <div>Hello from Dashboard </div>
+        <ChatListComponent />
+      </div>
+    );
   }
 }
 
